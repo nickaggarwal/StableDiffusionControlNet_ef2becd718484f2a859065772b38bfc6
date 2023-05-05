@@ -3,7 +3,7 @@ import requests
 import torch
 import base64
 from io import BytesIO
-from diffusers import ControlNetModel
+from diffusers import ControlNetModel, UniPCMultistepScheduler
 from controlnet_inpaint import StableDiffusionControlNetInpaintPipeline
 
 
@@ -19,7 +19,7 @@ class InferlessPythonModel:
             torch_dtype=torch.float16 )
 
         # speed up diffusion process with faster scheduler and memory optimization
-        self.pipe.scheduler = UniPCMultistepScheduler.from_config(pipe.scheduler.config)
+        self.pipe.scheduler = UniPCMultistepScheduler.from_config(self.pipe.scheduler.config)
         self.pipe = self.pipe.to("cuda:0")
 
     def infer(self, prompt, image_url, mask_url, control_url):
@@ -33,7 +33,7 @@ class InferlessPythonModel:
             num_inference_steps=20,
             generator=generator,
             image=init_image,
-            control_image=control_image, 
+            controlnet_conditioning_image=control_image, 
             mask_image=mask_image,
         ).images[0]
         buff = BytesIO()
