@@ -16,11 +16,13 @@ class TritonPythonModel:
             prompt = pb_utils.get_input_tensor_by_name(request, "prompt")
             image_url = pb_utils.get_input_tensor_by_name(request, "image_url")
             mask_url = pb_utils.get_input_tensor_by_name(request, "mask_url")
+            mask_url = pb_utils.get_input_tensor_by_name(request, "control_url")
             prompt_string = prompt.as_numpy()[0].decode()
             image_url_string = image_url.as_numpy()[0].decode()
             mask_url_string = mask_url.as_numpy()[0].decode()
+            control_url_string = mask_url.as_numpy()[0].decode()
             output = inferless_model.infer(
-                prompt_string, image_url_string, mask_url_string
+                prompt_string, image_url_string, mask_url_string, control_url_string
             )
             inference_response = pb_utils.InferenceResponse(
                 output_tensors=[

@@ -42,6 +42,11 @@ input [
     name: "mask_url"
     data_type: TYPE_STRING	
     dims: [-1]
+  },
+  {
+    name: "control_url"
+    data_type: TYPE_STRING  
+    dims: [-1]
   }
 ]
 output [
